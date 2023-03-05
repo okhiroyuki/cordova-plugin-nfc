@@ -1,4 +1,4 @@
-PhoneGap NFC Plugin
+Cordova NFC Plugin
 ==========================
 
 The NFC plugin allows you to read and write  NFC tags. You can also beam to, and receive from, other NFC enabled devices.
@@ -42,11 +42,11 @@ Supported Platforms
 
 ### Cordova
 
-    $ cordova plugin add phonegap-nfc
+    $ cordova plugin add @red-mobile/cordova-plugin-nfc
 
 ### PhoneGap
 
-    $ phonegap plugin add phonegap-nfc
+    $ phonegap plugin add @red-mobile/cordova-plugin-nfc
 
 ### PhoneGap Build
 
@@ -66,9 +66,9 @@ See [Getting Started](https://github.com/chariotsolutions/phonegap-nfc/blob/mast
 
 Reading NFC NDEF tags is supported on iPhone 7 (and newer) since iOS 11. iOS 13 added support for writing NDEF messages to NFC tags. iOS 13 also adds the ability to get the UID from some NFC tags. On iOS, the user must start a NFC session to scan for a tag. This is different from Android which can constantly scan for NFC tags. The [nfc.scanNdef](#nfcscanndef) and [nfc.scanTag](#nfcscantag) functions start a NFC scanning session. The NFC tag is returned to the caller via a Promise. If your existing code uses the deprecated [nfc.beginSession](#nfcbeginsession), update it to use `nfc.scanNdef`.
 
-The `scanNdef` function uses [NFCNDEFReaderSession](https://developer.apple.com/documentation/corenfc/nfcndefreadersession) to detect NFC Data Exchange Format (NDEF) tags. `scanTag` uses the newer [NFCTagReaderSession](https://developer.apple.com/documentation/corenfc/nfctagreadersession) available in iOS 13 to detect ISO15693, FeliCa, and MIFARE tags. The `scanTag` function will include the tag UID and tag type for *some* NFC tags along with the NDEF messages. `scanTag` can also read some RFID tags without NDEF messsages. `scanTag` will not scan some NDEF tags including Topaz and Mifare Classic. 
+The `scanNdef` function uses [NFCNDEFReaderSession](https://developer.apple.com/documentation/corenfc/nfcndefreadersession) to detect NFC Data Exchange Format (NDEF) tags. `scanTag` uses the newer [NFCTagReaderSession](https://developer.apple.com/documentation/corenfc/nfctagreadersession) available in iOS 13 to detect ISO15693, FeliCa, and MIFARE tags. The `scanTag` function will include the tag UID and tag type for *some* NFC tags along with the NDEF messages. `scanTag` can also read some RFID tags without NDEF messsages. `scanTag` will not scan some NDEF tags including Topaz and Mifare Classic.
 
-You must call [nfc.scanNdef](#nfcscanndef) and [nfc.scanTag](#nfcscantag) before every scan. 
+You must call [nfc.scanNdef](#nfcscanndef) and [nfc.scanTag](#nfcscantag) before every scan.
 
 Writing NFC tags on iOS uses the same [nfc.write](#nfcwrite) function as other platforms. Although it's the same function, the behavior is different on iOS. Calling `nfc.write` on an iOS device will start a new scanning session and write data to the scanned tag.
 
@@ -320,13 +320,13 @@ On **Windows Phone 8.1** this method should be called outside the NDEF Event Han
 On Android, write must be called inside an event handler
 
     function onNfc(nfcEvent) {
-    
+
         console.log(nfcEvent.tag);
-        
+
         var message = [
             ndef.textRecord(new String(new Date()))
         ];
-        
+
         nfc.write(
             message,
             success => console.log('wrote data to tag'),
@@ -359,7 +359,7 @@ On iOS you can optionally write to NFC tag using the read session
 
             // you can read tag data here
             console.log(tag);
-            
+
             // this example writes a new message with a timestamp
             var message = [
                 ndef.textRecord(new String(new Date()))
@@ -694,7 +694,7 @@ Function `scanNdef` starts the [NFCNDEFReaderSession](https://developer.apple.co
     } catch (err) {
         console.log(err);
     }
-    
+
 
 ### Supported Platforms
 
@@ -710,7 +710,7 @@ Calling `scanTag` will being an iOS NFC scanning session. The NFC tag will be re
 
 Function `scanTag` starts the [NFCTagReaderSession](https://developer.apple.com/documentation/corenfc/nfctagreadersession) allowing iOS to scan NFC tags.
 
-The Tag reader will attempt to get the UID from the NFC Tag. If can also read the UID from some non-NDEF tags. 
+The Tag reader will attempt to get the UID from the NFC Tag. If can also read the UID from some non-NDEF tags.
 
 Use [scanNdef](#nfcscanndef) for reading NFC tags on iOS unless you need to get the tag UID.
 
@@ -726,7 +726,7 @@ Use [scanNdef](#nfcscanndef) for reading NFC tags on iOS unless you need to get 
             console.log(JSON.stringify(tag))
             if (tag.id) {
                 console.log(nfc.bytesToHexString(tag.id));
-            }            
+            }
         },
         err => console.log(err)
     );
@@ -741,7 +741,7 @@ Use [scanNdef](#nfcscanndef) for reading NFC tags on iOS unless you need to get 
     } catch (err) {
         console.log(err);
     }
-    
+
 
 ### Supported Platforms
 
@@ -753,7 +753,7 @@ Use [scanNdef](#nfcscanndef) for reading NFC tags on iOS unless you need to get 
 Invalidate the NFC session started by `scanNdef` or `scanTag`.
 
     nfc.cancelScan();
-    
+
 ### Description
 
 Function `cancelScan` stops the [NFCReaderSession](https://developer.apple.com/documentation/corenfc/nfcreadersession) returning control to your app.
@@ -765,7 +765,7 @@ Function `cancelScan` stops the [NFCReaderSession](https://developer.apple.com/d
 ### Quick Example
 
     nfc.cancelScan().then(
-        success => { console.log('Cancelled NFC session')}, 
+        success => { console.log('Cancelled NFC session')},
         err => { console.log(`Error cancelling session ${err}`)}
     );
 
@@ -815,7 +815,7 @@ The flags control which tags are scanned. One benefit to reader mode, is the sys
 ### Quick Example
 
     nfc.readerMode(
-        nfc.FLAG_READER_NFC_A | nfc.FLAG_READER_NO_PLATFORM_SOUNDS, 
+        nfc.FLAG_READER_NFC_A | nfc.FLAG_READER_NO_PLATFORM_SOUNDS,
         nfcTag => console.log(JSON.stringify(nfcTag)),
         error => console.log('NFC reader mode failed', error)
     );
@@ -861,17 +861,17 @@ The tag technology functions provide access to I/O operations on a tag. Connect 
     const DESFIRE_SELECT_AID = '90 5A 00 00 03 AA AA AA 00'
 
     async function handleDesfire(nfcEvent) {
-        
+
         const tagId = nfc.bytesToHexString(nfcEvent.tag.id);
         console.log('Processing', tagId);
 
         try {
             await nfc.connect('android.nfc.tech.IsoDep', 500);
             console.log('connected to', tagId);
-            
+
             let response = await nfc.transceive(DESFIRE_SELECT_PICC);
             ensureResponseIs('9000', response);
-            
+
             response = await nfc.transceive(DESFIRE_SELECT_AID);
             ensureResponseIs('9100', response);
             // 91a0 means the requested application not found
@@ -879,7 +879,7 @@ The tag technology functions provide access to I/O operations on a tag. Connect 
             alert('Selected application AA AA AA');
 
             // more transcieve commands go here
-            
+
         } catch (error) {
             alert(error);
         } finally {
@@ -947,7 +947,7 @@ Send raw command to the tag and receive the response.
 
 ### Description
 
-Function `transceive` sends raw commands to the tag and receives the response. `nfc.connect` must be called before calling `transceive`. Data passed to transceive can be a hex string representation of bytes or an ArrayBuffer. The response is returned as an ArrayBuffer in the promise. 
+Function `transceive` sends raw commands to the tag and receives the response. `nfc.connect` must be called before calling `transceive`. Data passed to transceive can be a hex string representation of bytes or an ArrayBuffer. The response is returned as an ArrayBuffer in the promise.
 
 See Android's documentation [IsoDep.transceive()](https://developer.android.com/reference/android/nfc/tech/IsoDep.html#transceive(byte[])), [NfcV.transceive()](https://developer.android.com/reference/android/nfc/tech/NfcV.html#transceive(byte[])), [MifareUltralight.transceive()](https://developer.android.com/reference/android/nfc/tech/MifareUltralight.html#transceive(byte[])) for more info.
 
