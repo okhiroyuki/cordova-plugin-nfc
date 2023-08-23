@@ -1,6 +1,6 @@
 {
   "name": "@red-mobile/cordova-plugin-nfc",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Near Field Communication (NFC) Plugin. Read and write NDEF messages to NFC tags and share NDEF messages with peers.",
   "cordova": {
     "id": "@red-mobile/cordova-plugin-nfc",
