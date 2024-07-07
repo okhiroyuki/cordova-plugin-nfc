@@ -36,7 +36,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class NfcPlugin extends CordovaPlugin implements NfcAdapter.OnNdefPushCompleteCallback {
+public class NfcPlugin extends CordovaPlugin {
     private static final String REGISTER_MIME_TYPE = "registerMimeType";
     private static final String REMOVE_MIME_TYPE = "removeMimeType";
     private static final String REGISTER_NDEF = "registerNdef";
@@ -71,7 +71,6 @@ public class NfcPlugin extends CordovaPlugin implements NfcAdapter.OnNdefPushCom
     private static final String STATUS_NFC_OK = "NFC_OK";
     private static final String STATUS_NO_NFC = "NO_NFC";
     private static final String STATUS_NFC_DISABLED = "NFC_DISABLED";
-    private static final String STATUS_NDEF_PUSH_DISABLED = "NDEF_PUSH_DISABLED";
 
     private static final String TAG = "NfcPlugin";
     private final List<IntentFilter> intentFilters = new ArrayList<>();
