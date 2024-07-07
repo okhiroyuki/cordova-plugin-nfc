@@ -6,9 +6,6 @@
     "id": "@red-mobile/cordova-plugin-nfc",
     "platforms": [
       "android",
-      "wp8",
-      "windows",
-      "blackberry10",
       "ios"
     ]
   },
@@ -22,9 +19,6 @@
     "ecosystem:cordova",
     "cordova",
     "cordova-android",
-    "cordova-wp8",
-    "cordova-windows",
-    "cordova-blackberry10",
     "cordova-ios"
   ],
   "author": "Hiroyuki Okada <ok.okada.hiroyuki@gmail.com>",
