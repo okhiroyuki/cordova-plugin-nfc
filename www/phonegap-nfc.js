@@ -128,7 +128,6 @@ var ndef = {
      *
      * Note that by default, Android will open the URI defined in the type
      * field of an Absolute URI record (TNF=3) and ignore the payload.
-     * BlackBerry and Windows do not open the browser for TNF=3.
      *
      * To write a URI as the payload use ndef.uriRecord(uri)
      *
@@ -165,8 +164,7 @@ var ndef = {
 
         if (!id) { id = []; }
 
-        if (ndefRecords)
-        {
+        if (ndefRecords) {
             // make sure we have an array of something like NDEF records before encoding
             if (ndefRecords[0] instanceof Object && ndefRecords[0].hasOwnProperty('tnf')) {
                 payload = ndef.encodeMessage(ndefRecords);
@@ -185,7 +183,7 @@ var ndef = {
      * Helper that creates an empty NDEF record.
      *
      */
-    emptyRecord: function() {
+    emptyRecord: function () {
         return ndef.record(ndef.TNF_EMPTY, [], [], []);
     },
 
@@ -194,7 +192,7 @@ var ndef = {
      * http://developer.android.com/guide/topics/connectivity/nfc/nfc.html#aar
      *
      */
-    androidApplicationRecord: function(packageName) {
+    androidApplicationRecord: function (packageName) {
         return ndef.record(ndef.TNF_EXTERNAL_TYPE, "android.com:pkg", [], packageName);
     },
 
@@ -220,7 +218,7 @@ var ndef = {
             sr, // boolean shortRecord
             il; // boolean idLengthFieldIsPresent
 
-        for(i = 0; i < ndefRecords.length; i++) {
+        for (i = 0; i < ndefRecords.length; i++) {
 
             mb = (i === 0);
             me = (i === (ndefRecords.length - 1));
@@ -283,7 +281,7 @@ var ndef = {
             id = [],
             payload = [];
 
-        while(bytes.length) {
+        while (bytes.length) {
             tnf_byte = bytes.shift();
             header = ndef.decodeTnf(tnf_byte);
 
@@ -410,8 +408,8 @@ var ndef = {
 
 // nfc provides javascript wrappers to the native phonegap implementation
 var nfc = {
-    
-    multiCallbackTest: function(success, failure) {
+
+    multiCallbackTest: function (success, failure) {
         cordova.exec(success, failure, "NfcPlugin", "multiCallbackTest", []);
     },
 
@@ -419,7 +417,7 @@ var nfc = {
     //     //cordova.exec(success, failure, "NfcPlugin", "multiCallbackTest", []);
     //     setInterval(failure, 10000, 'Test from JavaScript!');
     // },
-    
+
     addTagDiscoveredListener: function (callback, win, fail) {
         document.addEventListener("tag", callback, false);
         cordova.exec(win, fail, "NfcPlugin", "registerTag", []);
@@ -440,12 +438,12 @@ var nfc = {
         cordova.exec(win, fail, "NfcPlugin", "registerNdefFormatable", []);
     },
 
-    write: function (ndefMessage, win, fail, options) {      
-        
+    write: function (ndefMessage, win, fail, options) {
+
         if (cordova.platformId === "ios") {
-          cordova.exec(win, fail, "NfcPlugin", "writeTag", [ndefMessage, options]);        
+            cordova.exec(win, fail, "NfcPlugin", "writeTag", [ndefMessage, options]);
         } else {
-          cordova.exec(win, fail, "NfcPlugin", "writeTag", [ndefMessage]);
+            cordova.exec(win, fail, "NfcPlugin", "writeTag", [ndefMessage]);
         }
     },
 
@@ -464,7 +462,7 @@ var nfc = {
     handover: function (uris, win, fail) {
         // if we get a single URI, wrap it in an array
         if (!Array.isArray(uris)) {
-            uris = [ uris ];
+            uris = [uris];
         }
         cordova.exec(win, fail, "NfcPlugin", "handover", uris);
     },
@@ -486,7 +484,7 @@ var nfc = {
         cordova.exec(win, fail, "NfcPlugin", "removeTag", []);
     },
 
-    removeMimeTypeListener: function(mimeType, callback, win, fail) {
+    removeMimeTypeListener: function (mimeType, callback, win, fail) {
         document.removeEventListener("ndef-mime", callback, false);
         cordova.exec(win, fail, "NfcPlugin", "removeMimeType", [mimeType]);
     },
@@ -502,21 +500,21 @@ var nfc = {
 
     // iOS only - scan for NFC NDEF tag using NFCNDEFReaderSession
     scanNdef: function (options) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             cordova.exec(resolve, reject, "NfcPlugin", "scanNdef", [options]);
         });
     },
 
     // iOS only - scan for NFC Tag using NFCTagReaderSession
     scanTag: function (options) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             cordova.exec(resolve, reject, "NfcPlugin", "scanTag", [options]);
         });
     },
-    
+
     // iOS only - cancel NFC scan session
     cancelScan: function () {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             cordova.exec(resolve, reject, "NfcPlugin", "cancelScan", []);
         });
     },
@@ -533,23 +531,23 @@ var nfc = {
     },
 
     // connect to begin transceive
-    connect: function(tech, timeout) {
-        return new Promise(function(resolve, reject) {
+    connect: function (tech, timeout) {
+        return new Promise(function (resolve, reject) {
             cordova.exec(resolve, reject, 'NfcPlugin', 'connect', [tech, timeout]);
         });
     },
 
     // close transceive connection
-    close: function() {
-        return new Promise(function(resolve, reject) {
+    close: function () {
+        return new Promise(function (resolve, reject) {
             cordova.exec(resolve, reject, 'NfcPlugin', 'close', []);
         });
     },
 
     // data - ArrayBuffer or string of hex data for transcieve
     // the results of transceive are returned in the promise success as an ArrayBuffer
-    transceive: function(data) {
-        return new Promise(function(resolve, reject) {
+    transceive: function (data) {
+        return new Promise(function (resolve, reject) {
 
             var buffer;
             if (typeof data === 'string') {
@@ -566,7 +564,7 @@ var nfc = {
         });
     },
 
-    // Android NfcAdapter.enableReaderMode flags 
+    // Android NfcAdapter.enableReaderMode flags
     FLAG_READER_NFC_A: 0x1,
     FLAG_READER_NFC_B: 0x2,
     FLAG_READER_NFC_F: 0x4,
@@ -574,13 +572,13 @@ var nfc = {
     FLAG_READER_NFC_BARCODE: 0x10,
     FLAG_READER_SKIP_NDEF_CHECK: 0x80,
     FLAG_READER_NO_PLATFORM_SOUNDS: 0x100,
-    
+
     // Android NfcAdapter.enabledReaderMode
-    readerMode: function(flags, readCallback, errorCallback) {
+    readerMode: function (flags, readCallback, errorCallback) {
         cordova.exec(readCallback, errorCallback, 'NfcPlugin', 'readerMode', [flags]);
     },
 
-    disableReaderMode: function(successCallback, errorCallback) {
+    disableReaderMode: function (successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, 'NfcPlugin', 'disableReaderMode', []);
     }
 
@@ -605,7 +603,7 @@ var util = {
         return hex;
     },
 
-    toPrintable: function(i) {
+    toPrintable: function (i) {
 
         if (i >= 0x20 & i <= 0x7F) {
             return String.fromCharCode(i);
@@ -614,7 +612,7 @@ var util = {
         }
     },
 
-    bytesToString: function(bytes) {
+    bytesToString: function (bytes) {
         // based on http://ciaranj.blogspot.fr/2007/11/utf8-characters-encoding-in-javascript.html
 
         var result = "";
@@ -622,38 +620,38 @@ var util = {
         i = c = c1 = c2 = c3 = 0;
 
         // Perform byte-order check.
-        if( bytes.length >= 3 ) {
-            if( (bytes[0] & 0xef) == 0xef && (bytes[1] & 0xbb) == 0xbb && (bytes[2] & 0xbf) == 0xbf ) {
+        if (bytes.length >= 3) {
+            if ((bytes[0] & 0xef) == 0xef && (bytes[1] & 0xbb) == 0xbb && (bytes[2] & 0xbf) == 0xbf) {
                 // stream has a BOM at the start, skip over
                 i = 3;
             }
         }
 
-        while ( i < bytes.length ) {
+        while (i < bytes.length) {
             c = bytes[i] & 0xff;
 
-            if ( c < 128 ) {
+            if (c < 128) {
 
                 result += String.fromCharCode(c);
                 i++;
 
-            } else if ( (c > 191) && (c < 224) ) {
+            } else if ((c > 191) && (c < 224)) {
 
-                if ( i + 1 >= bytes.length ) {
+                if (i + 1 >= bytes.length) {
                     throw "Un-expected encoding error, UTF-8 stream truncated, or incorrect";
                 }
                 c2 = bytes[i + 1] & 0xff;
-                result += String.fromCharCode( ((c & 31) << 6) | (c2 & 63) );
+                result += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
                 i += 2;
 
             } else {
 
-                if ( i + 2 >= bytes.length  || i + 1 >= bytes.length ) {
+                if (i + 2 >= bytes.length || i + 1 >= bytes.length) {
                     throw "Un-expected encoding error, UTF-8 stream truncated, or incorrect";
                 }
                 c2 = bytes[i + 1] & 0xff;
                 c3 = bytes[i + 2] & 0xff;
-                result += String.fromCharCode( ((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63) );
+                result += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
                 i += 3;
 
             }
@@ -661,7 +659,7 @@ var util = {
         return result;
     },
 
-    stringToBytes: function(string) {
+    stringToBytes: function (string) {
         // based on http://ciaranj.blogspot.fr/2007/11/utf8-characters-encoding-in-javascript.html
 
         var bytes = [];
@@ -672,9 +670,9 @@ var util = {
 
             if (c < 128) {
 
-                bytes[bytes.length]= c;
+                bytes[bytes.length] = c;
 
-            } else if((c > 127) && (c < 2048)) {
+            } else if ((c > 127) && (c < 2048)) {
 
                 bytes[bytes.length] = (c >> 6) | 192;
                 bytes[bytes.length] = (c & 63) | 128;
@@ -718,10 +716,10 @@ var util = {
      * @tnf 3-bit TNF (Type Name Format) - use one of the TNF_* constants
      * @type byte array or String
      */
-    isType: function(record, tnf, type) {
+    isType: function (record, tnf, type) {
         if (record.tnf === tnf) { // TNF is 3-bit
             var recordType;
-            if (typeof(type) === 'string') {
+            if (typeof (type) === 'string') {
                 recordType = type;
             } else {
                 recordType = nfc.bytesToString(type);
@@ -735,15 +733,15 @@ var util = {
      * Convert an ArrayBuffer to a hex string
      *
      * @param {ArrayBuffer} buffer
-     * @returns {srting} - hex representation of bytes e.g. 000407AF 
+     * @returns {srting} - hex representation of bytes e.g. 000407AF
      */
-    arrayBufferToHexString: function(buffer) {
+    arrayBufferToHexString: function (buffer) {
         function toHexString(byte) {
             return ('0' + (byte & 0xFF).toString(16)).slice(-2);
         }
         var typedArray = new Uint8Array(buffer);
         var array = Array.from(typedArray);  // need to convert to [] so our map result is not typed
-        var parts = array.map(function(i) { return toHexString(i) });
+        var parts = array.map(function (i) { return toHexString(i) });
 
         return parts.join('');
     },
@@ -754,7 +752,7 @@ var util = {
      * @param {string} hexString - hex representation of bytes
      * @return {ArrayBuffer} - The bytes in an ArrayBuffer.
      */
-    hexStringToArrayBuffer: function(hexString) {
+    hexStringToArrayBuffer: function (hexString) {
 
         // remove any delimiters - space, dash, or colon
         hexString = hexString.replace(/[\s-:]/g, '');
@@ -777,7 +775,7 @@ var util = {
         var pairs = hexString.match(/[\dA-F]{2}/gi);
 
         // convert the octets to integers
-        var ints = pairs.map(function(s) { return parseInt(s, 16) });
+        var ints = pairs.map(function (s) { return parseInt(s, 16) });
 
         var array = new Uint8Array(ints);
         return array.buffer;
@@ -807,7 +805,7 @@ var textHelper = {
 
     // encode text payload
     // @returns an array of bytes
-    encodePayload: function(text, lang, encoding) {
+    encodePayload: function (text, lang, encoding) {
 
         // ISO/IANA language code, but we're not enforcing
         if (!lang) { lang = 'en'; }
@@ -824,7 +822,7 @@ var textHelper = {
 var uriHelper = {
     // URI identifier codes from URI Record Type Definition NFCForum-TS-RTD_URI_1.0 2006-07-24
     // index in array matches code in the spec
-    protocols: [ "", "http://www.", "https://www.", "http://", "https://", "tel:", "mailto:", "ftp://anonymous:anonymous@", "ftp://ftp.", "ftps://", "sftp://", "smb://", "nfs://", "ftp://", "dav://", "news:", "telnet://", "imap:", "rtsp://", "urn:", "pop:", "sip:", "sips:", "tftp:", "btspp://", "btl2cap://", "btgoep://", "tcpobex://", "irdaobex://", "file://", "urn:epc:id:", "urn:epc:tag:", "urn:epc:pat:", "urn:epc:raw:", "urn:epc:", "urn:nfc:" ],
+    protocols: ["", "http://www.", "https://www.", "http://", "https://", "tel:", "mailto:", "ftp://anonymous:anonymous@", "ftp://ftp.", "ftps://", "sftp://", "smb://", "nfs://", "ftp://", "dav://", "news:", "telnet://", "imap:", "rtsp://", "urn:", "pop:", "sip:", "sips:", "tftp:", "btspp://", "btl2cap://", "btgoep://", "tcpobex://", "irdaobex://", "file://", "urn:epc:id:", "urn:epc:tag:", "urn:epc:pat:", "urn:epc:raw:", "urn:epc:", "urn:nfc:"],
 
     // decode a URI payload bytes
     // @returns a string
@@ -847,7 +845,7 @@ var uriHelper = {
         // check each protocol, unless we've found a match
         // "urn:" is the one exception where we need to keep checking
         // slice so we don't check ""
-        uriHelper.protocols.slice(1).forEach(function(protocol) {
+        uriHelper.protocols.slice(1).forEach(function (protocol) {
             if ((!prefix || prefix === "urn:") && uri.indexOf(protocol) === 0) {
                 prefix = protocol;
             }
@@ -894,19 +892,19 @@ window.ndef = ndef;
 window.util = util;
 window.fireNfcTagEvent = fireNfcTagEvent;
 
-// This channel receives nfcEvent data from native code 
+// This channel receives nfcEvent data from native code
 // and fires JavaScript events.
-require('cordova/channel').onCordovaReady.subscribe(function() {
-  require('cordova/exec')(success, null, 'NfcPlugin', 'channel', []);
-  function success(message) {
-    if (!message.type) { 
-        console.log(message);
-    } else {
-        console.log("Received NFC data, firing '" + message.type + "' event");
-        var e = document.createEvent('Events');
-        e.initEvent(message.type);
-        e.tag = message.tag;
-        document.dispatchEvent(e);
+require('cordova/channel').onCordovaReady.subscribe(function () {
+    require('cordova/exec')(success, null, 'NfcPlugin', 'channel', []);
+    function success(message) {
+        if (!message.type) {
+            console.log(message);
+        } else {
+            console.log("Received NFC data, firing '" + message.type + "' event");
+            var e = document.createEvent('Events');
+            e.initEvent(message.type);
+            e.tag = message.tag;
+            document.dispatchEvent(e);
+        }
     }
-  }
 });
